@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+  app:
+    image: docker-web-app
+    container_name: app
+    build:
+      context: ""
+      dockerfile: Dockerfile
+    ports:
+      - "9091:9091"
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/car_shop
+  db:
+    image: 'postgres:13.1-alpine'
+    container_name: db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=car_shop
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    depends_on:
+      - pgadmin
+    volumes:
+      - ./data:/var/lib/postgresql/data
+#  pgadmin:
+#    image: 'dpage/pgadmin4'
+#    container_name: pgadmin
+#    ports:
+#      - "5050:80"
+#    environment:
+#      - PGADMIN_DEFAULT_EMAIL=name@example.com
+#      - PGADMIN_DEFAULT_PASSWORD=admin
